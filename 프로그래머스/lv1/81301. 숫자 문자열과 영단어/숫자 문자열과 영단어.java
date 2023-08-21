@@ -10,7 +10,7 @@ class Solution {
         s = s.replaceAll("eight", "8");
         s = s.replaceAll("nine", "9");
         s = s.replaceAll("zero", "0");
-        
+
         return Integer.parseInt(s);
     }
 }
