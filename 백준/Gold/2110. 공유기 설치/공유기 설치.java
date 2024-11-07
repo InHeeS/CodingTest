@@ -1,45 +1,59 @@
-
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
+    static Scanner sc = new Scanner(System.in);
+    static StringBuilder sb = new StringBuilder();
+    static int N, C;
+    static int[] A;
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        input();
+        pro();
+    }
 
-        int N = sc.nextInt();
-        int C = sc.nextInt();
-        int[] xs = new int[N];
+    private static void pro() {
+        Arrays.sort(A, 1, N + 1);
 
-        for (int i = 0; i < N; i++) {
-            xs[i] = sc.nextInt();
-        }
-        Arrays.sort(xs);
-
-        int l = 1, r = xs[N - 1] - xs[0], ans = -1;
-        while (l <= r) {
-            int m = (l + r) / 2;
-            if (calulateCount(xs, m) >= C){
-                ans = m;
-                l = m +1;
+        int L = 1, R = 1000000000, ans = 0;
+        while(L <= R){
+            int mid = (L + R) / 2;
+            if (determination(mid)){
+                ans = mid;
+                L = mid + 1;
             }else{
-                r = m - 1;
+                R = mid - 1;
             }
         }
         System.out.println(ans);
     }
 
-    private static int calulateCount(int[] xs, int m) {
-        int count = 1;
-        int passX = xs[0];
+    private static boolean determination(int D) {
+        // D 만큼의 거리 차이를 둔다면 C 개 만큼의 공유기를 설치할 수 있는가?
 
-        for (int i = 1; i < xs.length; i++) {
-            if (xs[i] - passX >= m) {
-                passX = xs[i];
-                count++;
+        // 제일 왼쪽 집부터 가능한 많이 설치해보자!
+        // D 만큼의 거리를 두면서 최대로 설치한 개수와 C 를 비교하자.
+        int cnt = 1, last = A[1];
+        for (int i = 2; i <= N ; i++) {
+            // 이번에 A[i] 에설치가 가능한가?
+            if (A[i] - last >= D){
+                cnt++;
+                last = A[i];
             }
         }
-        return count;
+        return cnt >= C;
     }
+
+    private static void input() {
+        N = sc.nextInt();
+        C = sc.nextInt();
+        A = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
+            A[i] = sc.nextInt();
+        }
+    }
+
+
 
 }
