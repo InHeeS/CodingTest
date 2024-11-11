@@ -1,62 +1,81 @@
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class Main {
+public class Main{
+
+    static Scanner sc = new Scanner(System.in);
+    static StringBuilder sb = new StringBuilder();
+    static int N, M, V;
+    static ArrayList<Integer>[] adj;
+    static boolean[] visit;
 
 
-    static int n;
-    static int m;
-    static int v;
-    static int[][] graph;
-    static boolean[] visited;
+
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        n = sc.nextInt();
-        m = sc.nextInt();
-        v = sc.nextInt();
-
-        graph = new int[n + 1][n + 1];
-        visited = new boolean[n +1];
-        for (int i = 0; i < m; i++) {
-            int src = sc.nextInt();
-            int dst = sc.nextInt();
-            graph[src][dst] = 1;
-            graph[dst][src] = 1;
-        }
-        dfs(v);
-        System.out.println();
-        visited = new boolean[n + 1];
-        bfs(v);
+        input();
+        pro();
     }
-    static void dfs(int node){
-        visited[node] = true;
-        System.out.print(node + " ");
-        for(int i =1; i<= n; i++){
-            if (graph[node][i] == 1 && !visited[i])
-                dfs(i);
-        }
-    }
-    // 정점 번호를 담기위해 (bfs)
-    static Queue<Integer> q;
-    static void bfs(int node){
-        q = new LinkedList<>();
-        q.add(node);
-        visited[node] = true;
 
-        while(!q.isEmpty()){
-            int now = q.poll();
-            System.out.print(now + " ");
-            for (int i = 1; i <= n ; i++) {
-                if (graph[now][i] == 1 && !visited[i]){
-                    q.offer(i);
-                    visited[i] = true;
-                }
+    private static void pro() {
+        visit = new boolean[N +1];
+        dfs(V);
+        for (int i = 1; i <= N ; i++) {
+            visit[i] = false;
+        }
+        sb.append("\n");
+        bfs(V);
+        System.out.println(sb);
+    }
+
+    private static void bfs(int start) {
+        Queue<Integer> que = new LinkedList<>();
+        que.add(start);
+        visit[start] = true;
+
+        while(!que.isEmpty()){
+            int x = que.poll();
+            sb.append(x).append(' ');
+            for (int y : adj[x]) {
+                if (visit[y])
+                    continue;
+                que.add(y);
+                visit[y] = true;
             }
+        }
+    }
 
+    private static void dfs(int x) {
+        visit[x] = true;
+        sb.append(x).append(' ');
+
+        for (int y : adj[x]) {
+            if (visit[y])
+                continue;
+            dfs(y);
+        }
+    }
+
+    private static void input() {
+        N = sc.nextInt();
+        M = sc.nextInt();
+        V = sc.nextInt();
+
+        adj = new ArrayList[N + 1];
+        for (int i = 1; i <= N ; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < M; i++) {
+            int x = sc.nextInt(), y = sc.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
+        }
+
+        for (int i = 1; i <= N; i++) {
+            Collections.sort(adj[i]);
         }
     }
 
