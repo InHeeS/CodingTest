@@ -1,25 +1,24 @@
 import java.util.ArrayDeque;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Deque;
 class Solution {
     public int[] solution(int[] prices) {
-        int n = prices.length;
-        int[] answer = new int[n];
         Deque<Integer> stack = new ArrayDeque<>();
+        int[] result = new int[prices.length];
 
-        for (int i = 0; i < n; i++) {
-            while(!stack.isEmpty() && prices[i] < prices[stack.peek()]){
+        for (int i = 0; i < prices.length; i++) {
+            while(!stack.isEmpty() && prices[stack.peek()] > prices[i]){
                 int idx = stack.pop();
-                answer[idx] = i - idx;
+                result[idx] = i - idx;
             }
             stack.push(i);
         }
-        
+
         while(!stack.isEmpty()){
             int idx = stack.pop();
-            answer[idx] = (n - 1) - idx;
+            result[idx] = (prices.length - 1) - idx;
         }
 
-        return answer;
+        return result;
     }
 }
