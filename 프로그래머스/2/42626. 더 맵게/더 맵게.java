@@ -1,33 +1,27 @@
 import java.util.PriorityQueue;
-
+import java.util.PriorityQueue;
+import java.util.Queue;
 class Solution {
-    public static int solution(int[] scoville, int K) {
-        // 우선순위큐를 활용하면 매번 가장 작은 원소를 o(long n) 에 꺼낼 수 있음
-        // (scovile.length) -> n * log(n)
-        // default = aes
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
-        for (int s : scoville) {
-            heap.offer(s);
+   public static int solution(int[] scoville, int K) {
+        Queue<Integer> pq = new PriorityQueue<>();
+        for (int sco : scoville) {
+            pq.add(sco);
         }
 
         int mixCount = 0;
-        while(!heap.isEmpty()){
-            if (heap.peek() >= K) {
-                return mixCount;
+        while(!pq.isEmpty()){
+            Integer poll1 = pq.poll();
+            if (poll1 >= K){
+                break;
             }
-
-            if (heap.size() < 2){
+            if (pq.isEmpty()){
                 return -1;
             }
-            
-            int least = heap.poll();
-            int second = heap.poll();
-            int newScovile = least + (second * 2);
-            
-            heap.offer(newScovile);
+            Integer poll2 = pq.poll();
+            pq.add(poll1 + (poll2 * 2));
             mixCount++;
         }
-        
-        return -1;
+
+        return mixCount;
     }
 }
