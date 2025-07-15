@@ -1,13 +1,20 @@
 import java.util.Arrays;
 class Solution {
     public int solution(int[] citations) {
-        int len = citations.length;
-        int h =0;
         Arrays.sort(citations);
 
+        int len = citations.length;
+        // 1 4 5 8 9
+        int h = 0;
+        int max = 0;
         for (int i = 0; i < len; i++) {
-            h = Math.max(h, Math.min(citations[i], len - i));
+            // papers = 인용횟수
+            int papers = len - i;
+            if (citations[i] >= papers){
+                return papers;
+            }
         }
-        return h;
+        return 0;
     }
+
 }
