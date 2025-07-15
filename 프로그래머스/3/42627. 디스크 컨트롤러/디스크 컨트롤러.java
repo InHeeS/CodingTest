@@ -4,50 +4,53 @@ import java.util.PriorityQueue;
 
 class Solution {
     public static int solution(int[][] jobs) {
-        // 요청 시각 기준으로 오름차순 정렬
+        /**
+         * 작업의 소요시간이 짧은 것,
+         * 작업의 요청 시각이 빠른 것,
+         * 작업의 번호가 작은 것 순으로 우선순위가 높습니다.
+         * [s, j] = 요청 시점, 작업 소요시간
+         */
+
+        // 정렬이 필요한 이유 : ??
         Arrays.sort(jobs, Comparator.comparingInt(n -> n[0]));
 
-        // 현재 시간
-        int time = 0;
-        long totalTurnaround = 0;
-        // 처리된 작업 개수
-        int count = 0;
-        // 정렬된 배열에서 대기 큐에 아직 추가하지 않은 작업의 인덱스
-        int idx = 0;
-        int n = jobs.length;
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>(
-            (a, b) -> {
-                if (a[1] != b[1]){
-                    return Integer.compare(a[1], b[1]); // 소유 시간 우선
-                }
-                return Integer.compare(a[0], b[0]); // 소요 시간이 같으면 요청 시각 순
+        // 작업 소요시간 - 요청 시점
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> {
+            if (o1[1] != o2[1]){
+                return o1[1] - o2[1];
+                // return Integer.compare(o1[1] - o2[1]));
             }
-        );
+            return o1[0] - o2[0];
+        });
 
-        while(count < n){
+        int size = jobs.length;
+        int currentTime = 0;
+        long totalTurnAround = 0;
+        int count = 0;
+        int idx = 0;
 
-            // 현재 시각까지 도착한 작업들을 대기 큐에 넣기
-            while(idx < n && jobs[idx][0] <= time){
-                pq.offer(new int[]{jobs[idx][0], jobs[idx][1]});
+//        pq.add(new int[]{jobs[0][0], jobs[0][1]});
+
+        while(count < size){
+            while(idx < size && jobs[idx][0] <= currentTime){
+                pq.add(new int[]{jobs[idx][0], jobs[idx][1]});
                 idx++;
             }
-            // 대키 큐에 작업이 있다면 소요 시간이 가장 짧은 작업을 꺼내 처리 - priority queue
+
             if (!pq.isEmpty()){
                 int[] job = pq.poll();
                 int arrival = job[0];
                 int duration = job[1];
 
-                time += duration;
-                totalTurnaround += (time - arrival);
+                currentTime += duration;
+                totalTurnAround += (currentTime - arrival);
                 count++;
             }else{
-                time = jobs[idx][0];
+                currentTime = jobs[idx][0];
             }
         }
 
-        return (int)(totalTurnaround / n);
-
+        return (int)totalTurnAround / size;
     }
 
 }
