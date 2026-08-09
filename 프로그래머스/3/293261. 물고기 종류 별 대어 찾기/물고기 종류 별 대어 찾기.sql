@@ -1,9 +1,11 @@
-select fi.id, fni.fish_name, fi.length
-from fish_info fi
-join fish_name_info fni on fi.fish_type = fni.fish_type
-where
-    fi.length = (select max(length) 
-                 from fish_info
-                 where fish_type = fi.fish_type
-                )
-order by fi.id
+-- 코드를 작성해주세요
+SELECT FI.ID, FNI.FISH_NAME, FI.LENGTH
+FROM FISH_INFO FI
+JOIN FISH_NAME_INFO FNI ON FI.FISH_TYPE = FNI.FISH_TYPE
+WHERE FI.LENGTH = (
+    SELECT MAX(LENGTH)
+    FROM FISH_INFO
+    WHERE FISH_TYPE = FI.FISH_TYPE
+)
+GROUP BY FI.FISH_TYPE
+ORDER BY FI.ID
