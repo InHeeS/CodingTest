@@ -1,8 +1,9 @@
-select
-    ii.item_id,
-    ii.item_name,
-    ii.rarity
-from item_info ii
-left join item_tree t on ii.item_id = t.parent_item_id
-where t.parent_item_id is null
-order by ii.item_id desc
+-- 코드를 작성해주세요
+SELECT A.ITEM_ID, A.ITEM_NAME, A.RARITY
+FROM ITEM_INFO A
+WHERE A.ITEM_ID NOT IN (
+    SELECT PARENT_ITEM_ID
+    FROM ITEM_TREE
+    WHERE PARENT_ITEM_ID IS NOT NULL
+)
+ORDER BY A.ITEM_ID DESC;
