@@ -1,22 +1,19 @@
-select
-    e.emp_no,
-    e.emp_name,
-    case
-        when avg(g.score) >= 96  then 'S'
-        when avg(g.score) >= 90  then 'A'
-        when avg(g.score) >= 80  then 'B'
-        else 'C'
-    end as grade,
-    case
-        when avg(g.score) >= 96 then e.sal * 0.20
-        when avg(g.score) >= 90 then e.sal * 0.15
-        when avg(g.score) >= 80 then e.sal * 0.10
-        else 0
-    end as bonus
-from HR_EMPLOYEES e
-join hr_grade g
-on e.emp_no = g.emp_no
-where g.year = 2022
-group by e.emp_no, e.emp_name, e.sal
-order by e.emp_no 
-
+-- R_DEPARTMENT, HR_EMPLOYEES, HR_GRADE 테이블을 이용해 사원별 성과금 정보를 조회하려합니다. 평가 점수별 등급과 등급에 따른 성과금 정보가 아래와 같을 때, 사번, 성명, 평가 등급, 성과금을 조회하는 SQL문을 작성해주세요
+SELECT E.EMP_NO,
+       E.EMP_NAME,
+       CASE
+           WHEN AVG(G.SCORE) >= 96 THEN 'S'
+           WHEN AVG(G.SCORE) >= 90 THEN 'A'
+           WHEN AVG(G.SCORE) >= 80 THEN 'B'
+           ELSE 'C'
+       END AS GRADE,
+       CASE
+           WHEN AVG(G.SCORE) >= 96 THEN E.SAL * 0.20
+           WHEN AVG(G.SCORE) >= 90 THEN E.SAL * 0.15
+           WHEN AVG(G.SCORE) >= 80 THEN E.SAL * 0.10
+           ELSE 0
+       END AS BONUS
+FROM HR_EMPLOYEES E
+JOIN HR_GRADE G ON E.EMP_NO = G.EMP_NO
+GROUP BY E.EMP_NO
+ORDER BY E.EMP_NO;
