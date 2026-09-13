@@ -1,20 +1,16 @@
-
 import java.util.HashMap;
 import java.util.Map;
-
 class Solution {
-    public int solution(int[] nums) {
-        Map<Integer, Integer> numsMap = new HashMap<>();
+    public static int solution(int[] nums) {
+        int len = nums.length;
+        Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
-            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
-        int maxGet = nums.length / 2;
-        int keyCnt = numsMap.size();
-
-        if (keyCnt < maxGet)
-            return keyCnt;
-
-        return maxGet;
+        int pick = nums.length / 2;
+        int kind = map.size();
+        
+        return Math.min(pick, kind);
     }
 }
